@@ -6,7 +6,7 @@ import Formations from './pages/Formations';
 import FormationDetail from './pages/FormationDetail';
 import Admin from './admin/Admin';
 import CandidateSpace from './pages/CandidateSpace';
-import TrainerSpace from './pages/TrainerSpace';
+import TrainerSpace from './formateur/TrainerSpace';
 import Login from './auth/Login';
 import Signup from './auth/Signup';
 import Footer from './components/Footer';
