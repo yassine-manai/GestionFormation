@@ -8,7 +8,7 @@ const FormationDetail = ({ match }) => {
     title: 'Java',
     description: 'Formation Java Backend',
     sessions: [
-      { sessionId: 1, startDate: '01/01/2025', endDate: '01/03/2025', maxCandidates: 15, currentCandidates: 5 },
+      { sessionId: 1, startDate: '01/01/2024', endDate: '01/03/2024', maxCandidates: 15, currentCandidates: 5 },
       { sessionId: 2, startDate: '02/01/2025', endDate: '02/03/2025', maxCandidates: 15, currentCandidates: 10 },
     ],
   };

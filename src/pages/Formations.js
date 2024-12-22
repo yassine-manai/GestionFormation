@@ -4,8 +4,8 @@ import TrainingCard from '../components/TrainingCard';
 const Formations = () => {
   const [search, setSearch] = useState('');
   const formations = [
-    { id: 1, title: 'Java', description: 'Formation Java Backend', tags: ['java', 'backend'] },
-    { id: 2, title: 'React', description: 'Formation React Frontend', tags: ['react', 'frontend'] },
+    { id: 1, title: 'Java', description: 'Formation Java Backend', tags: ['java', 'backend'], duration: '3 mois', participants: 15, startDate: '01/01/2024' },
+    { id: 2, title: 'React', description: 'Formation React Frontend', tags: ['react', 'frontend'], duration: '2 mois', participants: 10, startDate: '01/02/2024' },
   ];
 
   const filteredFormations = formations.filter((f) =>
