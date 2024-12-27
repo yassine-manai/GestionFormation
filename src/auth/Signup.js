@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { 
+import {
   User, Mail, Lock, EyeOff, Eye,
   Phone, MapPin, Building, Briefcase, Calendar,
   ChevronRight, ChevronLeft, Check, GraduationCap,
   FileText, Clock, Award
-} from 'lucide-react';
+} from 'lucide-react'; 
 
 const steps = {
   candidate: [
@@ -41,9 +41,8 @@ const PasswordStrengthIndicator = ({ password }) => {
         {[1, 2, 3, 4, 5].map((index) => (
           <div
             key={index}
-            className={`flex-1 rounded-full ${
-              index <= strength ? 'bg-blue-600' : 'bg-gray-200'
-            }`}
+            className={`flex-1 rounded-full ${index <= strength ? 'bg-blue-600' : 'bg-gray-200'
+              }`}
           />
         ))}
       </div>
@@ -65,8 +64,8 @@ const StepIndicator = ({ currentStep, steps }) => (
       <React.Fragment key={step.id}>
         <div className="flex flex-col items-center">
           <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 
-            ${currentStep >= step.id 
-              ? 'border-blue-600 bg-blue-600 text-white' 
+            ${currentStep >= step.id
+              ? 'border-blue-600 bg-blue-600 text-white'
               : 'border-gray-300 text-gray-400'}`}
           >
             {currentStep > step.id ? (
@@ -75,16 +74,14 @@ const StepIndicator = ({ currentStep, steps }) => (
               step.id
             )}
           </div>
-          <span className={`text-xs mt-2 ${
-            currentStep >= step.id ? 'text-blue-600' : 'text-gray-400'
-          }`}>
+          <span className={`text-xs mt-2 ${currentStep >= step.id ? 'text-blue-600' : 'text-gray-400'
+            }`}>
             {step.title}
           </span>
         </div>
         {index < steps.length - 1 && (
-          <div className={`w-20 h-0.5 mx-2 ${
-            currentStep > step.id ? 'bg-blue-600' : 'bg-gray-300'
-          }`} />
+          <div className={`w-20 h-0.5 mx-2 ${currentStep > step.id ? 'bg-blue-600' : 'bg-gray-300'
+            }`} />
         )}
       </React.Fragment>
     ))}
@@ -115,9 +112,7 @@ const Signup = () => {
     firstName: '',
     lastName: '',
     phone: '',
-    dateOfBirth: '',
     address: '',
-    city: '',
     // Candidate specific fields
     company: '',
     position: '',
@@ -134,7 +129,7 @@ const Signup = () => {
     methodology: '',
     ratePerHour: ''
   });
-  
+
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -145,7 +140,6 @@ const Signup = () => {
       ...prev,
       [name]: value
     }));
-    // Clear error when field is modified
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -154,25 +148,25 @@ const Signup = () => {
   const validateStep = () => {
     const newErrors = {};
     const isTrainer = formData.role === 'trainer';
-    
+
     if (currentStep === 1) {
       if (!formData.email) {
         newErrors.email = "L'email est requis";
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
         newErrors.email = "Format d'email invalide";
       }
-      
+
       if (!formData.password) {
         newErrors.password = "Le mot de passe est requis";
       } else if (formData.password.length < 8) {
         newErrors.password = "Le mot de passe doit contenir au moins 8 caractères";
       }
-      
+
       if (formData.password !== formData.confirmPassword) {
         newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
       }
     }
-    
+
     if (currentStep === 2) {
       if (!formData.firstName) newErrors.firstName = "Le prénom est requis";
       if (!formData.lastName) newErrors.lastName = "Le nom est requis";
@@ -182,7 +176,7 @@ const Signup = () => {
         newErrors.phone = "Format de téléphone invalide";
       }
     }
-    
+
     if (currentStep === 3) {
       if (isTrainer) {
         if (!formData.expertise) newErrors.expertise = "Le domaine d'expertise est requis";
@@ -242,7 +236,7 @@ const Signup = () => {
               placeholder="Adresse email"
               error={errors.email}
             />
-            
+
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
               <input
@@ -264,7 +258,7 @@ const Signup = () => {
             </div>
 
             <PasswordStrengthIndicator password={formData.password} />
-            
+
 
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
@@ -300,7 +294,7 @@ const Signup = () => {
             </div>
           </div>
         );
-      
+
       case 2:
         return (
           <div className="space-y-4">
@@ -324,7 +318,7 @@ const Signup = () => {
                 error={errors.lastName}
               />
             </div>
-            
+
             <FormField
               icon={Phone}
               type="tel"
@@ -334,7 +328,7 @@ const Signup = () => {
               placeholder="Téléphone"
               error={errors.phone}
             />
-            
+
             <FormField
               icon={Calendar}
               type="date"
@@ -343,7 +337,7 @@ const Signup = () => {
               onChange={handleChange}
               error={errors.dateOfBirth}
             />
-            
+
             <FormField
               icon={MapPin}
               type="text"
@@ -355,7 +349,7 @@ const Signup = () => {
             />
           </div>
         );
-      
+
       case 3:
         return isTrainer ? (
           <div className="space-y-4">
@@ -444,7 +438,7 @@ const Signup = () => {
               placeholder="Entreprise actuelle"
               error={errors.company}
             />
-            
+
             <FormField
               icon={Briefcase}
               type="text"
@@ -452,143 +446,224 @@ const Signup = () => {
               value={formData.position}
               onChange={handleChange}
               placeholder="Poste actuel"
-              error={errors.position} 
-              />
-            
-              <div className="space-y-1">
-                <textarea
-                  name="experience"
-                  value={formData.experience}
-                  onChange={handleChange}
-                  placeholder="Expérience professionnelle"
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500 h-24 
+              error={errors.position}
+            />
+
+            <div className="space-y-1">
+              <textarea
+                name="experience"
+                value={formData.experience}
+                onChange={handleChange}
+                placeholder="Expérience professionnelle"
+                className={`w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500 h-24 
                     ${errors.experience ? 'border-red-500' : 'border-gray-300'}`}
-                />
-                {errors.experience && <p className="text-red-500 text-sm">{errors.experience}</p>}
-              </div>
-              
-              <div className="space-y-1">
-                <textarea
-                  name="education"
-                  value={formData.education}
-                  onChange={handleChange}
-                  placeholder="Formation et diplômes"
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500 h-24 
+              />
+              {errors.experience && <p className="text-red-500 text-sm">{errors.experience}</p>}
+            </div>
+
+            <div className="space-y-1">
+              <textarea
+                name="education"
+                value={formData.education}
+                onChange={handleChange}
+                placeholder="Formation et diplômes"
+                className={`w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500 h-24 
                     ${errors.education ? 'border-red-500' : 'border-gray-300'}`}
-                />
-                {errors.education && <p className="text-red-500 text-sm">{errors.education}</p>}
+              />
+              {errors.education && <p className="text-red-500 text-sm">{errors.education}</p>}
+            </div>
+
+            <div className="space-y-1">
+              <textarea
+                name="skills"
+                value={formData.skills}
+                onChange={handleChange}
+                placeholder="Compétences"
+                className={`w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500 h-24 
+                    ${errors.skills ? 'border-red-500' : 'border-gray-300'}`}
+              />
+              {errors.skills && <p className="text-red-500 text-sm">{errors.skills}</p>}
+            </div>
+          </div>
+        );
+
+        case 4:
+          return (
+            <div className="space-y-6">
+              <div className="bg-white rounded-lg divide-y divide-gray-200">
+                {/* Account Section */}
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold mb-4">Informations du compte</h3>
+                  <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                      <dt className="text-sm font-medium text-gray-500">Email</dt>
+                      <dd className="mt-1 text-sm text-gray-900">{formData.email}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-sm font-medium text-gray-500">Type de compte</dt>
+                      <dd className="mt-1 text-sm text-gray-900">{isTrainer ? 'Formateur' : 'Candidat'}</dd>
+                    </div>
+                  </dl>
+                </div>
+  
+                {/* Personal Info Section */}
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold mb-4">Informations personnelles</h3>
+                  <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                      <dt className="text-sm font-medium text-gray-500">Nom complet</dt>
+                      <dd className="mt-1 text-sm text-gray-900">{`${formData.firstName} ${formData.lastName}`}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-sm font-medium text-gray-500">Téléphone</dt>
+                      <dd className="mt-1 text-sm text-gray-900">{formData.phone}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-sm font-medium text-gray-500">Date de naissance</dt>
+                      <dd className="mt-1 text-sm text-gray-900">{formData.dateOfBirth}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-sm font-medium text-gray-500">Adresse</dt>
+                      <dd className="mt-1 text-sm text-gray-900">{formData.address || 'Non spécifié'}</dd>
+                    </div>
+                  </dl>
+                </div>
+  
+                {/* Professional Info Section */}
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold mb-4">
+                    {isTrainer ? 'Informations du formateur' : 'Informations professionnelles'}
+                  </h3>
+                  <dl className="grid grid-cols-1 gap-4">
+                    {isTrainer ? (
+                      <>
+                        <div>
+                          <dt className="text-sm font-medium text-gray-500">Domaines d'expertise</dt>
+                          <dd className="mt-1 text-sm text-gray-900">{formData.expertise || 'Non spécifié'}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-sm font-medium text-gray-500">Certifications</dt>
+                          <dd className="mt-1 text-sm text-gray-900">{formData.certifications || 'Non spécifié'}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-sm font-medium text-gray-500">Expérience en formation</dt>
+                          <dd className="mt-1 text-sm text-gray-900">{formData.teachingExperience || 'Non spécifié'}</dd>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <dt className="text-sm font-medium text-gray-500">Disponibilités</dt>
+                            <dd className="mt-1 text-sm text-gray-900">{formData.availability || 'Non spécifié'}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-sm font-medium text-gray-500">Tarif horaire</dt>
+                            <dd className="mt-1 text-sm text-gray-900">
+                              {formData.ratePerHour ? `${formData.ratePerHour}€/h` : 'Non spécifié'}
+                            </dd>
+                          </div>
+                        </div>
+                        <div>
+                          <dt className="text-sm font-medium text-gray-500">Méthodologie</dt>
+                          <dd className="mt-1 text-sm text-gray-900">{formData.methodology || 'Non spécifié'}</dd>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <dt className="text-sm font-medium text-gray-500">Entreprise</dt>
+                            <dd className="mt-1 text-sm text-gray-900">{formData.company || 'Non spécifié'}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-sm font-medium text-gray-500">Poste</dt>
+                            <dd className="mt-1 text-sm text-gray-900">{formData.position || 'Non spécifié'}</dd>
+                          </div>
+                        </div>
+                        <div>
+                          <dt className="text-sm font-medium text-gray-500">Formation</dt>
+                          <dd className="mt-1 text-sm text-gray-900">{formData.education || 'Non spécifié'}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-sm font-medium text-gray-500">Expérience</dt>
+                          <dd className="mt-1 text-sm text-gray-900">{formData.experience || 'Non spécifié'}</dd>
+                        </div>
+                        <div>
+                          <dt className="text-sm font-medium text-gray-500">Compétences</dt>
+                          <dd className="mt-1 text-sm text-gray-900">{formData.skills || 'Non spécifié'}</dd>
+                        </div>
+                      </>
+                    )}
+                  </dl>
+                </div>
               </div>
   
-              <div className="space-y-1">
-                <textarea
-                  name="skills"
-                  value={formData.skills}
-                  onChange={handleChange}
-                  placeholder="Compétences"
-                  className={`w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500 h-24 
-                    ${errors.skills ? 'border-red-500' : 'border-gray-300'}`}
-                />
-                {errors.skills && <p className="text-red-500 text-sm">{errors.skills}</p>}
-              </div>
+              {errors.submit && (
+                <div className="mt-4 p-4 bg-red-50 rounded-lg">
+                  <p className="text-sm text-red-600 text-center">{errors.submit}</p>
+                </div>
+              )}
             </div>
           );
-        
-      case 4:
-          return (
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold mb-4">Vérifiez vos informations</h3>
-              <div className="bg-gray-50 p-4 rounded-lg space-y-3">
-                <p><strong>Email:</strong> {formData.email}</p>
-                <p><strong>Nom complet:</strong> {formData.firstName} {formData.lastName}</p>
-                <p><strong>Téléphone:</strong> {formData.phone}</p>
-                <p><strong>Date de naissance:</strong> {formData.dateOfBirth}</p>
-                <p><strong>Adresse:</strong> {formData.address}</p>
-                <p><strong>Rôle:</strong> {isTrainer ? 'Formateur' : 'Candidat'}</p>
-                {isTrainer ? (
-                  <>
-                    <p><strong>Domaines d'expertise:</strong> {formData.expertise}</p>
-                    <p><strong>Certifications:</strong> {formData.certifications}</p>
-                    <p><strong>Expérience en formation:</strong> {formData.teachingExperience}</p>
-                    <p><strong>Disponibilités:</strong> {formData.availability}</p>
-                    <p><strong>Matières préférées:</strong> {formData.preferredSubjects}</p>
-                    <p><strong>Méthodologie:</strong> {formData.methodology}</p>
-                    <p><strong>Tarif horaire:</strong> {formData.ratePerHour}€/h</p>
-                  </>
-                ) : (
-                  <>
-                    <p><strong>Entreprise:</strong> {formData.company}</p>
-                    <p><strong>Poste:</strong> {formData.position}</p>
-                    <p><strong>Expérience:</strong> {formData.experience}</p>
-                    <p><strong>Formation:</strong> {formData.education}</p>
-                    <p><strong>Compétences:</strong> {formData.skills}</p>
-                  </>
-                )}
-              </div>
-              {errors.submit && <p className="text-red-500 text-sm text-center">{errors.submit}</p>}
-            </div>
-          );
-        
+  
         default:
           return null;
       }
-    };
-  
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
-        <div className="bg-white w-full max-w-2xl rounded-xl shadow-xl p-8">
-          <StepIndicator currentStep={currentStep} steps={steps[formData.role]} />
-          
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-            {steps[formData.role][currentStep - 1].title}
-          </h2>
-          
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {renderFormFields()}
-            
-            <div className="flex justify-between pt-6">
-              {currentStep > 1 && (
-                <button
-                  type="button"
-                  onClick={handlePrevious}
-                  className="flex items-center px-6 py-3 text-gray-600 hover:text-gray-800"
-                >
-                  <ChevronLeft size={20} className="mr-2" />
-                  Précédent
-                </button>
-              )}
-              
-              {currentStep < 4 ? (
-                <button
-                  type="button"
-                  onClick={handleNext}
-                  className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg ml-auto hover:bg-blue-700 transition-colors"
-                >
-                  Suivant
-                  <ChevronRight size={20} className="ml-2" />
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="flex items-center px-6 py-3 bg-green-600 text-white rounded-lg ml-auto hover:bg-green-700 transition-colors"
-                >
-                  Confirmer l'inscription
-                  <Check size={20} className="ml-2" />
-                </button>
-              )}
-            </div>
-          </form>
-  
-          <div className="text-center mt-6">
-            <p className="text-gray-600">
-              Vous avez déjà un compte ? {' '}
-              <Link to="/login" className="text-blue-600 hover:underline font-bold">
-                Connectez-vous
-              </Link>
-            </p>
+    }
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
+      <div className="bg-white w-full max-w-2xl rounded-xl shadow-xl p-8">
+        <StepIndicator currentStep={currentStep} steps={steps[formData.role]} />
+
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+          {steps[formData.role][currentStep - 1].title}
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {renderFormFields()}
+
+          <div className="flex justify-between pt-6">
+            {currentStep > 1 && (
+              <button
+                type="button"
+                onClick={handlePrevious}
+                className="flex items-center px-6 py-3 text-gray-600 hover:text-gray-800"
+              >
+                <ChevronLeft size={20} className="mr-2" />
+                Précédent
+              </button>
+            )}
+
+            {currentStep < 4 ? (
+              <button
+                type="button"
+                onClick={handleNext}
+                className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg ml-auto hover:bg-blue-700 transition-colors"
+              >
+                Suivant
+                <ChevronRight size={20} className="ml-2" />
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="flex items-center px-6 py-3 bg-green-600 text-white rounded-lg ml-auto hover:bg-green-700 transition-colors"
+              >
+                Confirmer l'inscription
+                <Check size={20} className="ml-2" />
+              </button>
+            )}
           </div>
+        </form>
+
+        <div className="text-center mt-6">
+          <p className="text-gray-600">
+            Vous avez déjà un compte ? {' '}
+            <Link to="/login" className="text-blue-600 hover:underline font-bold">
+              Connectez-vous
+            </Link>
+          </p>
         </div>
       </div>
-    );
-  };
-  
-  export default Signup;
+    </div>
+  );
+};
+
+export default Signup;
