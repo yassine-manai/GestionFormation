@@ -6,9 +6,44 @@ const TrainerSpace = ({ onLogout }) => {
   const [loading, setLoading] = useState(true);
   const [selectedSession, setSelectedSession] = useState(null);
 
-  // Sample data - replace with actual API calls
+  // Sample data for training sessions
   const sampleSessions = [
-
+    {
+      id: 1,
+      title: 'Formation React Avancée',
+      startDate: '2024-01-15',
+      duration: '3 jours',
+      participants: [
+        { id: 1, name: 'Alice Dupont', email: 'alice.dupont@example.com', progress: 80 },
+        { id: 2, name: 'Jean Dupuis', email: 'jean.dupuis@example.com', progress: 60 },
+      ],
+      progress: 70,
+      status: 'En cours',
+    },
+    {
+      id: 2,
+      title: 'Introduction à Node.js',
+      startDate: '2024-02-10',
+      duration: '5 jours',
+      participants: [
+        { id: 3, name: 'Marie Curie', email: 'marie.curie@example.com', progress: 50 },
+        { id: 4, name: 'Louis Pasteur', email: 'louis.pasteur@example.com', progress: 30 },
+      ],
+      progress: 40,
+      status: 'Planifié',
+    },
+    {
+      id: 3,
+      title: 'Maîtrise de Docker',
+      startDate: '2024-03-05',
+      duration: '2 jours',
+      participants: [
+        { id: 5, name: 'Albert Einstein', email: 'albert.einstein@example.com', progress: 100 },
+        { id: 6, name: 'Isaac Newton', email: 'isaac.newton@example.com', progress: 95 },
+      ],
+      progress: 97,
+      status: 'Terminé',
+    },
   ];
 
   useEffect(() => {
@@ -44,18 +79,18 @@ const TrainerSpace = ({ onLogout }) => {
             >
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-4">{session.title}</h3>
-                
+
                 <div className="space-y-3">
                   <div className="flex items-center text-gray-600">
                     <Calendar className="h-5 w-5 mr-2" />
                     <span>Début: {session.startDate}</span>
                   </div>
-                  
+
                   <div className="flex items-center text-gray-600">
                     <Clock className="h-5 w-5 mr-2" />
                     <span>Durée: {session.duration}</span>
                   </div>
-                  
+
                   <div className="flex items-center text-gray-600">
                     <Users className="h-5 w-5 mr-2" />
                     <span>Participants: {session.participants.length}</span>
@@ -75,16 +110,26 @@ const TrainerSpace = ({ onLogout }) => {
                   </div>
 
                   <div className="mt-4 flex justify-between items-center">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      session.status === 'En cours' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                    }`}>
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        session.status === 'En cours'
+                          ? 'bg-green-100 text-green-800'
+                          : session.status === 'Planifié'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
                       {session.status}
                     </span>
                     <button
-                      onClick={() => setSelectedSession(selectedSession?.id === session.id ? null : session)}
+                      onClick={() =>
+                        setSelectedSession(selectedSession?.id === session.id ? null : session)
+                      }
                       className="text-blue-600 hover:text-blue-800 font-medium"
                     >
-                      {selectedSession?.id === session.id ? 'Masquer participants' : 'Voir participants'}
+                      {selectedSession?.id === session.id
+                        ? 'Masquer participants'
+                        : 'Voir participants'}
                     </button>
                   </div>
 
@@ -92,7 +137,7 @@ const TrainerSpace = ({ onLogout }) => {
                     <div className="mt-4 border-t pt-4">
                       <h4 className="font-medium text-gray-900 mb-3">Liste des participants</h4>
                       <div className="space-y-3">
-                        {session.participants.map(participant => (
+                        {session.participants.map((participant) => (
                           <div key={participant.id} className="bg-gray-50 p-3 rounded-lg">
                             <div className="flex justify-between items-center mb-2">
                               <span className="font-medium">{participant.name}</span>
@@ -120,7 +165,9 @@ const TrainerSpace = ({ onLogout }) => {
           <div className="text-center py-12">
             <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
             <h3 className="mt-2 text-sm font-medium text-gray-900">Aucune formation</h3>
-            <p className="mt-1 text-sm text-gray-500">Vous n'encadrez aucune formation pour le moment.</p>
+            <p className="mt-1 text-sm text-gray-500">
+              Vous n'encadrez aucune formation pour le moment.
+            </p>
           </div>
         )}
       </div>

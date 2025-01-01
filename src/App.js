@@ -5,13 +5,14 @@ import Home from './pages/Home';
 import Formations from './pages/Formations';
 import FormationDetail from './pages/FormationDetail';
 import Admin from './admin/Admin';
-import CandidateSpace from './pages/CandidateSpace';
+import CandidateSpace from './candidat/CandidateSpace';
 import TrainerSpace from './formateur/TrainerSpace';
 import Login from './auth/Login';
 import Signup from './auth/Signup';
 import Footer from './components/Footer';
 import NotFound from './pages/NotFound';
 import Logout from './auth/Logout';
+import ForgotPassword from './auth/ForgotPassword';
 
 const ROUTES_WITHOUT_FOOTER = ['/login', '/signup', '/admin'];
 
@@ -56,7 +57,7 @@ const AppContent = ({ isAuthenticated, role, handleLogout }) => {
             />
             
             <Route 
-              path="/trainer" 
+              path="/formateur" 
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated} role={role} allowedRoles={['trainer']}>
                   <TrainerSpace onLogout={handleLogout} />
@@ -68,7 +69,7 @@ const AppContent = ({ isAuthenticated, role, handleLogout }) => {
               path="/login" 
               element={
                 isAuthenticated ? 
-                <Navigate to={role === 'trainer' ? '/trainer' : '/candidate'} replace /> : 
+                <Navigate to={role === 'trainer' ? '/formateur' : '/candidate'} replace /> : 
                 <Login />
               } 
             />
@@ -77,12 +78,14 @@ const AppContent = ({ isAuthenticated, role, handleLogout }) => {
               path="/signup" 
               element={
                 isAuthenticated ? 
-                <Navigate to={role === 'trainer' ? '/trainer' : '/candidate'} replace /> : 
+                <Navigate to={role === 'trainer' ? '/formateur' : '/candidate'} replace /> : 
                 <Signup />
               } 
             />
 
             <Route path="*" element={<NotFound />} /> 
+            <Route path="/forgot-password" element={<ForgotPassword />} /> 
+
           </Routes>
         </div>
       </div>
@@ -118,16 +121,19 @@ const App = () => {
     localStorage.setItem('userToken', userData.token);
     localStorage.setItem('userRole', userData.role);
     localStorage.setItem('userData', JSON.stringify(userData));
+    window.location.reload(); 
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setRole(null);
-    setUser(null);
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userData');
-  };
+    const handleLogout = () => {
+      setIsAuthenticated(false);
+      setRole(null);
+      setUser(null);
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('userData');
+      window.location.reload();
+    };
+    
 
   return (
     <Router>

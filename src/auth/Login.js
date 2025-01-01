@@ -1,67 +1,11 @@
-// Login.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Mail, Lock, EyeOff, Eye, XCircle } from 'lucide-react';
 
-
-const mockUsers = [
-  {
-    id: 1,
-    email: 'trainer@example.com',
-    password: 'test123',
-    role: 'trainer',
-    name: 'John Doe',
-    token: 'fake-trainer-token-123'
-  },
-  {
-    id: 2,
-    email: 'candidate@example.com',
-    password: 'test123',
-    role: 'candidate',
-    name: 'Jane Smith',
-    token: 'fake-candidate-token-456'
-  }
-];
-
-const MOCK_API_DELAY = 500;
-
-const mockAuthService = {
-  login: async (email, password) => {
-    await new Promise(resolve => setTimeout(resolve, MOCK_API_DELAY));
-    
-    const user = mockUsers.find(u => u.email === email);
-    
-    if (!user) {
-      throw new Error('Utilisateur non trouvé');
-    }
-    
-    if (user.password !== password) {
-      throw new Error('Mot de passe incorrect');
-    }
-    
-    return {
-      success: true,
-      data: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        token: user.token
-      }
-    };
-  },
-  
-  validateToken: async (token) => {
-    await new Promise(resolve => setTimeout(resolve, MOCK_API_DELAY));
-    return mockUsers.some(user => user.token === token);
-  }
-};
-
-
 const Login = ({ onLogin }) => {
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    mdp: ''
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
@@ -78,8 +22,8 @@ const Login = ({ onLogin }) => {
       newErrors.email = 'Email invalide';
     }
 
-    if (!formData.password) {
-      newErrors.password = 'Le mot de passe est requis';
+    if (!formData.mdp) { 
+      newErrors.mdp = 'Le mot de passe est requis';
     }
 
     setErrors(newErrors);
@@ -103,27 +47,47 @@ const Login = ({ onLogin }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    
+  
     if (validateForm()) {
       setIsLoading(true);
       try {
-        const response = await mockAuthService.login(formData.email, formData.password);
-        
-        if (response.success) {
-          // Store auth data
-          localStorage.setItem('userToken', response.data.token);
-          localStorage.setItem('userRole', response.data.role);
-          localStorage.setItem('userData', JSON.stringify(response.data));
-          
-          // Call the onLogin callback if provided
-          if (onLogin) {
-            onLogin(response.data);
-          }
-          
-          // Navigate based on role
-          navigate(response.data.role === 'trainer' ? '/trainer' : '/candidate');
+       // console.log('API Login URL:', process.env.REACT_APP_API_LOGIN_URL);
+
+       const response = await fetch(`http://localhost:7050/login`, {
+        method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            mdp: formData.mdp 
+          }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Une erreur est survenue lors de la connexion');
         }
+
+        // Store auth data
+        localStorage.setItem('userToken', data.token);
+        localStorage.setItem('userRole', data.role);
+        localStorage.setItem('userData', JSON.stringify({
+          email: data.email,
+          role: data.role
+        }));
+
+        // Call the onLogin callback if provided
+        if (onLogin) {
+          onLogin(data);
+        }
+
+        // Navigate based on role
+        navigate(data.role === 'formateur' ? '/formateur' : '/candidate');
+        window.location.reload();
       } catch (error) {
+        console.error('Login failed:', error.message);
         setLoginError(error.message || 'Une erreur est survenue lors de la connexion');
       } finally {
         setIsLoading(false);
@@ -176,13 +140,13 @@ const Login = ({ onLogin }) => {
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  value={formData.password}
+                  name="mdp" // Changed from 'password' to 'mdp'
+                  value={formData.mdp}
                   onChange={handleChange}
                   placeholder="Mot de passe"
                   disabled={isLoading}
                   className={`w-full pl-10 pr-10 py-3 border rounded-lg focus:outline-none 
-                    ${errors.password 
+                    ${errors.mdp 
                       ? 'border-red-500 focus:border-red-500' 
                       : 'border-gray-300 focus:border-blue-500'
                     }`}
@@ -196,7 +160,7 @@ const Login = ({ onLogin }) => {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+              {errors.mdp && <p className="text-red-500 text-xs mt-1">{errors.mdp}</p>}
             </div>
 
             {/* Forgot Password */}
